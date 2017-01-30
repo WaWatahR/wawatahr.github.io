@@ -96,46 +96,46 @@ session$sendCustomMessage(type="jsondata",var_json})</code></pre>
 						<p>All we need to do is ensure we are capturing the message and dealing with it approporiately. While I was learning the ropes(and still am) I was fortunate to find out that it doesn't happen often that the javascript will cause a fatal exception during runtime and cause the app to crash. If there is a logically or syntactical problem the element won't be rendered.</p>
 						<p>Create a d3script.js file in the www directory of the Shiny application. The www directory might need to be created as well.</p>
 						<pre><code>Shiny.addCustomMessageHandler("jsondata",
-									function(message){
+function(message){
 									
-									//Get JSON data from R
-									var data = message;
+//Get JSON data from R
+var data = message;
 
-									//d3 functionality to be place here
-								});	</code></pre>
+//d3 functionality to be place here
+});	</code></pre>
 								
 						<p>For this example I kept it align with the first tutorial from D3, creating a bar chart. To prove that it integrates easily within the Shiny framework I paramterized the output with input sliders. This highlights the ability for the chart to scale according to the data and maintain its form.</p>
 						<pre><code>//Scale the graph to the max
-									var x = d3.scale.linear()
-									.domain([0, d3.max(data, function(d) { return +d.value; })])
-									.range([0, width]);</pre></code>
+var x = d3.scale.linear()
+.domain([0, d3.max(data, function(d) { return +d.value; })])
+.range([0, width]);</pre></code>
 						<p>The next step is to the SVG element to the div created in the UI script. This will vary from use case to use case but for this example it is simple.</p>
 						<pre><code>var chart = d3.select("#d3chart2")
-									.append("svg")
-									.attr("width", width)
-									.attr("height", barHeight * 6)
-									.attr("class", "chart");</pre></code>
+.append("svg")
+.attr("width", width)
+.attr("height", barHeight * 6)
+.attr("class", "chart");</pre></code>
 						<p>The following code simply creates the bars given the input paramaters and style sheet. Most of the customization will happen within each element of the SVG.</p>
 						<pre><code>var bar = chart.selectAll("g")
-						.data(data)
-						.enter().append("g")
-						.attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+.data(data)
+.enter().append("g")
+.attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
-						bar.append("rect")
-						.attr("width", function(d) { return x(+d.value); })
-						.attr("height", barHeight - 1);
+bar.append("rect")
+.attr("width", function(d) { return x(+d.value); })
+.attr("height", barHeight - 1);
 
-						bar.append("text")
-						.attr("x", function(d) { return x(+d.value) - 3; })
-						.attr("y", barHeight / 2)
-						.attr("dy", ".35em")
-						.text(function(d) { return +d.value; });</pre></code>
+bar.append("text")
+.attr("x", function(d) { return x(+d.value) - 3; })
+.attr("y", barHeight / 2)
+.attr("dy", ".35em")
+.text(function(d) { return +d.value; });</pre></code>
 						<p>If you were to boot up and run the application from RStudio you should see the graphs and the home screen. Please ensure the application opens within your web browser and not RStudio as alot of the functionality required is not yet supported.</p>
 						<p>Because D3 is appending to each element as it is being updated we need to ensure that we first delete the children elements created by the script. This will ensure that each time the page is updated through the user input we are only left with the latest information.
 						In order to do this we simply bind on to the children elements by first selecting them then removing them.</p>
 						<pre><code>//remove previous elements to ensure when data is updated it does not duplicate data
-							d3.select("*#d3out").select("div").remove();
-							d3.select("#d3chart2").select("svg").remove();</pre></code>
+d3.select("*#d3out").select("div").remove();
+d3.select("#d3chart2").select("svg").remove();</pre></code>
 						<p>The shiny application is now ready to go and can be played with and tweaked to get you going with the awesomeness that is D3 and R.</p>
 						<p> </p>
 						<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
