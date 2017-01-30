@@ -80,11 +80,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<p>All the code is available on my github account. I suggest downloading it as a good baseline to start any D3 Shiny project. Just update the css as the styling is not ideal.</p>
 						<br>
 						<h3>Let's get going!</h3>
-						<p>The first thing to remember is we are simply preparing and processing the data in R. D3 is doing all the heavy lifting in terms of the javascript code required to produce high touch reporting. For further details see <a href="https://d3js.org/">d3js.org</a> or to dive deeper into tutorials check out <a href="https://github.com/d3/d3/wiki/Tutorials">these</p>
+						<p>The first thing to remember is we are simply preparing and processing the data in R. D3 is doing all the heavy lifting in terms of the javascript code required to produce high touch reporting. For further details see <a href="https://d3js.org/">d3js.org</a> or to dive deeper into tutorials check out <a href="https://github.com/d3/d3/wiki/Tutorials">these</a>.</p>
 						<br>
 						<p>The first thing we need to understand is that Shiny is a framework that will render HTML and javascript from the code the program is required to be interpreted. In order for the program to incorporate the D3 functions the javascript functions and libaries need to be referenced at page load. </p>
 						<code>tags$script(src="https://d3js.org/d3.v3.min.js")</code>
-						<p>Once this has been referenced we can then make a call to our javascript functions in order for Shiny to call it at runtime.</p>
+						<p>Once this has been referenced we can then make a call to our javascript functions in order for Shiny to call it at runtime. To reference the D3 script we reference it like any other javascript file used in html.</p>
+						<code>tags$script(src="d3script.js")</code>
+						<p>In order for the D3 to bind to an HTML element I create divs with specific IDs in order for me to make it easier to manage and control. This is not the only way of doing it just by far the easiet for me.</p>
+						<code>tags$div(id="d3out"),
+                            tags$div(id="d3chart", class="chart")</code>
 						<p> </p>
 						<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
 						<script type="IN/Share"></script>
