@@ -74,13 +74,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<h3>D3 Shiny Hello World</h3>
 					</div>
 					<div class="about-two">
-						<a href="D3Shiny.html"><img src="images/d3js-logo.jpg" alt="" /></a>
+						<a href="D3Shiny.html"><img src="images/d3js-logo.jpg" style="width:500; height:300;" alt="" /></a>
 						<p>Posted by <a href="#">Warren</a> on 30 Jan, 2015</p>
 						<p>As many data scientists before me I have had to spend some time reading through a number of blogs, Hello World programs and tutorials. I wanted to dumb it down completely that if someone has ever created a Shiny app in RStudio and know the difference between Java nd Javascript that they sould get D3 going in R in just a few moments.</p>
 						<p>All the code is available on my github account. I suggest downloading it as a good baseline to start any D3 Shiny project. Just update the css as the styling is not ideal.</p>
 						<br>
-						<p></p>
-						<code>library('shiny')</code>
+						<h3>Let's get going!</h3>
+						<p>The first thing to remember is we are simply preparing and processing the data in R. D3 is doing all the heavy lifting in terms of the javascript code required to produce high touch reporting. For further details see <a href="https://d3js.org/">d3js.org</a> or to dive deeper into tutorials check out <a href="https://github.com/d3/d3/wiki/Tutorials">these</p>
+						<br>
+						<p>The first thing we need to understand is that Shiny is a framework that will render HTML and javascript from the code the program is required to be interpreted. In order for the program to incorporate the D3 functions the javascript functions and libaries need to be referenced at page load. </p>
+						<code>tags$script(src="https://d3js.org/d3.v3.min.js")</code>
+						<p>Once this has been referenced we can then make a call to our javascript functions in order for Shiny to call it at runtime.</p>
 						<p> </p>
 						<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
 						<script type="IN/Share"></script>
