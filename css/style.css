@@ -20,6 +20,7 @@ body {
 	font-size: 100%;
 	font-family: 'RobotoSlab-Regular';
 }
+
 body a{
 	transition: 0.5s all ease;
 	-webkit-transition: 0.5s all ease;
@@ -36,6 +37,32 @@ ul,label{
 }
 body a:hover{
 	text-decoration:none;
+}
+pre {
+    font-size: 14px;
+    border-radius: 5px;
+    font-family: "Bitstream Vera Sans Mono", "Consolas", "Courier", monospace;
+    overflow: auto;
+    padding: 10px 20px;
+    margin: 20px 0;
+    background: #f6f9fa;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+code {
+    font-family: "Bitstream Vera Sans Mono", "Consolas", "Courier", monospace;
+    background-color: #f6f9fa;
+    padding: 2px 4px;
+    display: inline-block;
+    border-radius: 5px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #384047;
 }
 /*--Header-top-Starts--*/
 .head-main{
@@ -237,7 +264,7 @@ ul.navig li a.active{
 /*--Header-Ends--*/
 /*--banner-starts--*/
 .banner-top{
-	background:url(../images/banner.jpg) no-repeat;
+	background:url(../images/banner1.jpg) no-repeat;
 	min-height:600px;
 	background-size:cover;
 	-webkit-background-size:cover;
