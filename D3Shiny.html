@@ -85,14 +85,58 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<pre><code>tags$script(src="https://d3js.org/d3.v3.min.js")</code></pre>
 						<p>Once this has been referenced we can then make a call to our javascript functions in order for Shiny to call it at runtime. To reference the D3 script we reference it like any other javascript file used in html.</p>
 						<pre><code>tags$script(src="d3script.js")</code></pre>
-						<p>In order for the D3 to bind to an HTML element create divs with specific IDs in order to make it easier to manage and control. This is not the only way of doing it just by far the easiet for me.</p>
+						<p>In order for the D3 output to bind to an HTML element create divs with specific IDs in order to make it easier to manage and control. This is not the only way of doing it just by far the easiet for me.</p>
 						<pre><code>tags$div(id="d3out"),
                             tags$div(id="d3chart", class="chart")</code></pre>
 						<p>Now that the UI piece is sorted out we need to setup the d3script javascript and the server file. In order for the R to communicate the data between D3 and Shiny we create a custom message handler. Essentially the server will send the data frame as message which will be handled client side.
-						It is important to note here that D3 expects to receive a JSON message format. Luckily there is the jsonlite that will convert a structured table or list to a JSON array. In order to make the output responsive the data manipulation is wrapped in a reactive function that is referenced in one of the standard "render" functions of Shiny.</p>
+						It is important to note here that D3 expects to receive a JSON message format. Luckily there is the jsonlite library that will convert a structured dataframe or list to a JSON array. In order to make the output responsive the data manipulation is wrapped in a reactive function that is referenced in one of the standard "render" functions of Shiny.</p>
 						<pre><code>d3data <- reactive({
 							var_json = toJSON(data.frame(ID= c('Bar 1','Bar 2','Bar 3','Bar 4','Bar 5'), value= c(input$b1,input$b2,input$b3,input$b4,input$b5)))
 							session$sendCustomMessage(type="jsondata",var_json})</code></pre>
+						<p>All we need to do is ensure we are capturing the message and dealing with it approporiately. While I was learning the ropes(and still am) I was fortunate to find out that it doesn't happen often that the javascript will cause a fatal exception during runtime and cause the app to crash. If there is a logically or syntactical problem the element won't be rendered.</p>
+						<p>Create a d3script.js file in the www directory of the Shiny application. The www directory might need to be created as well.</p>
+						<pre><code>Shiny.addCustomMessageHandler("jsondata",
+									function(message){
+									
+									//Get JSON data from R
+									var data = message;
+
+									//d3 functionality to be place here
+								});	</code></pre>
+								
+						<p>For this example I kept it align with the first tutorial from D3, creating a bar chart. To prove that it integrates easily within the Shiny framework I paramterized the output with input sliders. This highlights the ability for the chart to scale according to the data and maintain its form.</p>
+						<pre><code>//Scale the graph to the max
+									var x = d3.scale.linear()
+									.domain([0, d3.max(data, function(d) { return +d.value; })])
+									.range([0, width]);</pre></code>
+						<p>The next step is to the SVG element to the div created in the UI script. This will vary from use case to use case but for this example it is simple.</p>
+						<pre><code>var chart = d3.select("#d3chart2")
+									.append("svg")
+									.attr("width", width)
+									.attr("height", barHeight * 6)
+									.attr("class", "chart");</pre></code>
+						<p>The following code simply creates the bars given the input paramaters and style sheet. Most of the customization will happen within each element of the SVG.</p>
+						<pre><code>var bar = chart.selectAll("g")
+						.data(data)
+						.enter().append("g")
+						.attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+						bar.append("rect")
+						.attr("width", function(d) { return x(+d.value); })
+						.attr("height", barHeight - 1);
+
+						bar.append("text")
+						.attr("x", function(d) { return x(+d.value) - 3; })
+						.attr("y", barHeight / 2)
+						.attr("dy", ".35em")
+						.text(function(d) { return +d.value; });</pre></code>
+						<p>If you were to boot up and run the application from RStudio you should see the graphs and the home screen. Please ensure the application opens within your web browser and not RStudio as alot of the functionality required is not yet supported.</p>
+						<p>Because D3 is appending to each element as it is being updated we need to ensure that we first delete the children elements created by the script. This will ensure that each time the page is updated through the user input we are only left with the latest information.
+						In order to do this we simply bind on to the children elements by first selecting them then removing them.</p>
+						<pre><code>//remove previous elements to ensure when data is updated it does not duplicate data
+							d3.select("*#d3out").select("div").remove();
+							d3.select("#d3chart2").select("svg").remove();</pre></code>
+						<p>The shiny application is now ready to go and can be played with and tweaked to get you going with the awesomeness that is D3 and R.</p>
 						<p> </p>
 						<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
 						<script type="IN/Share"></script>
