@@ -77,7 +77,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<a href="D3Shiny.html"><img src="images/d3js-logo.jpg" style="width:500; height:300;" alt="" /></a>
 						<p>Posted by <a href="#">Warren</a> on 30 Jan, 2015</p>
 						<p>As many data scientists before me I have had to spend some time reading through a number of blogs, Hello World programs and tutorials. I wanted to dumb it down completely so that anyone who has ever created a Shiny app in RStudio and knows the difference between Java and Javascript that they sould get D3 going in R in just a few minutes.</p>
-						<p>All the code is available on my github account. I suggest downloading it as a good baseline to start any D3 Shiny project. Just update the css as the styling is not ideal.</p>
+						<p>All the code is available on <a href="https://github.com/WaWatahR/HobbyR/tree/master/D3%20Shiny">github</a>. I suggest downloading it as a good baseline to start any D3 Shiny project. Just update the css as the styling is not ideal.</p>
 						<br>
 						<h3>Let's get going!</h3>
 						<p>The first thing to remember is we are simply preparing and processing the data in R. D3 is doing all the heavy lifting in terms of the javascript code required to produce high touch reporting. For further details see <a href="https://d3js.org/">d3js.org</a> or to dive deeper into tutorials check out <a href="https://github.com/d3/d3/wiki/Tutorials">these</a>.</p>
@@ -86,14 +86,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<p>Once this has been referenced we can then make a call to our javascript functions in order for Shiny to call it at runtime. To reference the D3 script we reference it like any other javascript file used in html.</p>
 						<pre><code>tags$script(src="d3script.js")</code></pre>
 						<p>In order for the D3 output to bind to an HTML element create divs with specific IDs in order to make it easier to manage and control. This is not the only way of doing it just by far the easiet for me.</p>
-						<pre><code>tags$div(id="d3out"), bla
+						<pre><code>tags$div(id="d3out"),
 tags$div(id="d3chart", class="chart")</code></pre>
-						<p>Now that the UI piece is sorted out we need to setup the d3script javascript and the server file. In order for the R to communicate the data between D3 and Shiny we create a custom message handler. Essentially the server will send the data frame as message which will be handled client side.
+						<p>Now that the UI piece is sorted out we need to setup the d3script javascript and the server file. In order for the R to communicate the data between D3 and Shiny we create a custom message handler. Essentially the server will send the data frame as a message which will be handled client side.
 						It is important to note here that D3 expects to receive a JSON message format. Luckily there is the jsonlite library that will convert a structured dataframe or list to a JSON array. In order to make the output responsive the data manipulation is wrapped in a reactive function that is referenced in one of the standard "render" functions of Shiny.</p>
 						<pre><code>d3data <- reactive({
 var_json = toJSON(data.frame(ID= c('Bar 1','Bar 2','Bar 3','Bar 4','Bar 5'), value= c(input$b1,input$b2,input$b3,input$b4,input$b5)))
 session$sendCustomMessage(type="jsondata",var_json})</code></pre>
-						<p>All we need to do is ensure we are capturing the message and dealing with it approporiately. While I was learning the ropes(and still am) I was fortunate to find out that it doesn't happen often that the javascript will cause a fatal exception during runtime and cause the app to crash. If there is a logically or syntactical problem the element won't be rendered.</p>
+						<p>All we need to do is ensure we are capturing the message and dealing with it approporiately. While I was learning the ropes(and still am) I was fortunate to find out that it doesn't happen often that the javascript will cause a fatal exception during runtime and cause the app to crash. If there is a logically or syntactical problem the element simply will not be rendered.</p>
 						<p>Create a d3script.js file in the www directory of the Shiny application. The www directory might need to be created as well.</p>
 						<pre><code>Shiny.addCustomMessageHandler("jsondata",
 function(message){
